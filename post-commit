@@ -1,0 +1,30 @@
+#!/bin/ksh
+
+# Define constants for directory paths
+CONF_BACKUP_DIR="/base/data/files/config_backups"
+GIT_DIR="/base/nfsroot/etc/peakflow/config/.git"
+GIT_SCRIPT_DIR="/base/data/files/scripts"
+BACKUP_UTIL_SCRIPT="$GIT_SCRIPT_DIR/backupUtil"
+
+# Create the backup directory if it doesn't exist
+if [ ! -d "$CONF_BACKUP_DIR" ]; then
+  mkdir -p "$CONF_BACKUP_DIR" || exit 0
+fi
+
+# Copy the commit log to the working directory
+if [ -f "$GIT_DIR/COMMIT_EDITMSG" ]; then
+  cp "$GIT_DIR/COMMIT_EDITMSG" "$CONF_BACKUP_DIR/COMMIT_EDITMSG" || exit 0
+else
+  exit 0
+fi
+
+{
+# Wait while configuration is uploaded to the device
+  sleep 5
+# Execute the 'config show' command and redirect the output to a file
+  /base/usr/local/sbin/psh -c "/ config show" > "$CONF_BACKUP_DIR/$(hostname).cfg"
+# Check if backupUtil script exists before starting it
+  if [ -x "$BACKUP_UTIL_SCRIPT" ]; then
+    "$BACKUP_UTIL_SCRIPT" > /dev/null 2>&1
+  fi
+} &
