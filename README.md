@@ -16,7 +16,7 @@
 ## Сборка
 Компиляция исходных файлов должна происходить с учетом операционной системы и архитектуры используемого процессора. В нашем случае, это _amd64_ под управлением _linux_. 
 ```shell
-$ if [ -d exasrc ]; then cd exasrc; else echo "Command should be run at the top level of this repository" && exit; fi
+$ if [ -d src ]; then cd src; else echo "Command should be run at the top level of this repository" && exit; fi
 $ go get; GOOS=linux GOARCH=amd64 go build -o ../backupUtil
 ```
 
@@ -30,20 +30,19 @@ $ go get; GOOS=linux GOARCH=amd64 go build -o ../backupUtil
 Независимо от типа устройства считаем, что используемые файлы находятся в базовой директории:
 ```shell
 $ ls -1 /base/data/files/scripts/
-backupUtil
-backupUtil.cfg
-backupCron 
-post-commit
+  backupUtil
+  backupUtil.cfg
+  backupCron 
+  post-commit
 ```
 При этом файлы `backupUtil`, `backupCron` и `post-commit` должны быть исполняемыми.
 ```shell
-chmod +x backupUtil backupCron post-commit
+$ chmod +x backupUtil backupCron post-commit
 ```
 
 Рассмотрим пошаговую инструкцию по настройке резервного копирования конфигурации устройств различных групп.
 
 ### Peakflow SP
- **Peakflow SP**.
 ```shell
 $ mkdir -p /base/nfsroot/etc/peakflow/config/.git/hooks/
 $ mv /base/data/files/scripts/post-commit /base/nfsroot/etc/peakflow/config/.git/hooks/post-commit
