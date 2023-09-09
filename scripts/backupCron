@@ -2,8 +2,7 @@
 
 # Define constants for directory paths
 CONF_BACKUP_DIR="/base/data/files/config_backups"
-# CONFDIR="/base/store/conf"
-# not define because that already exists in env
+CONFDIR="/base/store/conf"
 GIT_SCRIPT_DIR="/base/data/files/scripts"
 BACKUP_UTIL_SCRIPT="$GIT_SCRIPT_DIR/backupUtil"
 
